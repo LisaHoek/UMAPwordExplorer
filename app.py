@@ -156,6 +156,8 @@ if uploaded_file is not None:
 
     # Read selected points
     selected_indices = []
+    selected_df = pd.DataFrame()
+
     try:
         if event and event.selection and event.selection.point_indices:
             selected_indices = list(event.selection.point_indices)
@@ -198,11 +200,14 @@ if uploaded_file is not None:
             st.info("Select points using lasso or box selection.")
 
     st.divider()
-    st.subheader("Data Preview (filtered)")
-    st.dataframe(df_plot[["text", "x", "y", "freq"]], use_container_width=True)
+    st.subheader("Data Preview (selected)")
+    if not selected_df.empty:
+        st.dataframe(selected_df, use_container_width=True)
+    else:
+        st.info("No points selected.")
 
-    st.subheader("Data Preview (all)")
-    st.dataframe(df[["text", "x", "y", "freq"]], use_container_width=True)
+    st.subheader("Data Preview (plot)")
+    st.dataframe(df_plot, use_container_width=True)
 
 else:
     st.info("Please upload a CSV file first.")
